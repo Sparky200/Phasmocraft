@@ -4,5 +4,6 @@ public enum Rarity {
     VERY_RARE,
     RARE,
     UNCOMMON,
-    COMMON
+    COMMON,
+    VERY_COMMON
 }
