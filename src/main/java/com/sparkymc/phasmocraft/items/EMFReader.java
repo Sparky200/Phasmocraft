@@ -3,6 +3,8 @@ package com.sparkymc.phasmocraft.items;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import static com.sparkymc.phasmocraft.Utils.colorize;
+
 public class EMFReader extends PhasmoItem {
 
     public EMFReader() {
@@ -15,7 +17,7 @@ public class EMFReader extends PhasmoItem {
         var meta = stack.getItemMeta();
         assert meta != null;
 
-
+        meta.setDisplayName(colorize("&fEMF Reader"));
 
         stack.setItemMeta(meta);
         return stack;
