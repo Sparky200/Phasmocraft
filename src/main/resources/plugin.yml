@@ -1,0 +1,8 @@
+name: Phasmocraft
+main: com.sparkymc.phasmocraft.Phasmocraft
+version: 1.0
+api-version: 1.18
+authors:
+    - Sparky
+    - Abraxas
+load: STARTUP
