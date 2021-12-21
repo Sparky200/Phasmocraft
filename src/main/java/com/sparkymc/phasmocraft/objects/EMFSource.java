@@ -4,6 +4,11 @@ import org.bukkit.block.Block;
 
 public class EMFSource {
 
+    private final Block source;
+    private final EMFCause cause;
+    private final int level;
+    private final float range;
+    private final long fadeTime;
 
     /**
      * Constructs a new EMF source with the provided information.
@@ -14,7 +19,11 @@ public class EMFSource {
      * @param fadeTime The time (in ticks) until the source fades
      */
     public EMFSource(Block source, EMFCause cause, int level, float range, long fadeTime) {
-
+        this.source = source;
+        this.cause = cause;
+        this.level = level;
+        this.range = range;
+        this.fadeTime = fadeTime;
     }
 
     /**
@@ -26,5 +35,40 @@ public class EMFSource {
      */
     public EMFSource(Block source, EMFCause cause, int level, float range) {
         this(source, cause, level, range, cause.getDefaultTime());
+    }
+
+    /**
+     * Gets the source of the EMF.
+     */
+    public Block getSource() {
+        return source;
+    }
+
+    /**
+     * Gets the cause of the EMF.
+     */
+    public EMFCause getCause() {
+        return cause;
+    }
+
+    /**
+     * Gets the level of the EMF.
+     */
+    public int getLevel() {
+        return level;
+    }
+
+    /**
+     * Gets the range of the EMF.
+     */
+    public float getRange() {
+        return range;
+    }
+
+    /**
+     * Gets the fade time of the EMF.
+     */
+    public long getFadeTime() {
+        return fadeTime;
     }
 }
