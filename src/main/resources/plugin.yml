@@ -5,4 +5,17 @@ api-version: 1.18
 authors:
     - Sparky
     - Abraxas
-load: STARTUP
+load: POSTWORLD
+commands:
+    giveitem:
+        description: a
+        usage: b
+        permission: c
+    startround:
+        description: a
+        usage: b
+        permission: c
+permissions:
+    c:
+        description: a
+        default: op

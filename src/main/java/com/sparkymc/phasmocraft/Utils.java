@@ -24,8 +24,20 @@ public class Utils {
         return getRandom().nextInt(min, max);
     }
 
-    public static void log(Level level, String message){
+    public static void log(Level level, String message) {
         main.getLogger().log(level,colorize(message));
+    }
+
+    public static void log(Level level, Object object) {
+        log(level, String.valueOf(object));
+    }
+
+    public static void log(String message) {
+        log(Level.INFO, message);
+    }
+
+    public static void log(Object object) {
+        log(Level.INFO, object);
     }
 
     public static String colorize(String string) {

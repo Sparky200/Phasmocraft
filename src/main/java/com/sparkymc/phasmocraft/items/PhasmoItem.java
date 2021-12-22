@@ -20,6 +20,7 @@ public abstract class PhasmoItem {
         return base;
     }
 
+
     public void onInteract(PlayerInteractEvent event) {
 
     }
@@ -33,7 +34,7 @@ public abstract class PhasmoItem {
     }
 
     /**
-     * Called every tick...
+     * Called every 10 ticks to prevent lag
      * @param round The round this item currently belongs to. If null, this item got out of the round somehow.
      * @param owner The owner of the item. Null if not being held by a player.
      * @param stack The stack that is this item.

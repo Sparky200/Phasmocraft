@@ -66,6 +66,7 @@ public class Round {
         this.host = host;
         this.world = world;
         lobbyLocation = world.getSpawnLocation();
+        this.status = RoundStatus.IN_LOBBY;
         addPlayer(host);
     }
 
@@ -128,11 +129,22 @@ public class Round {
         player.teleport(handler.getRoundEndLocation());
     }
 
+    /**
+     * Ran by the round handler to tick the round and all the items actively in the round.
+     */
+    public void tickRound() {
+
+    }
+
     private void end() {
         // something should happen here
     }
 
     public void start() {
 
+    }
+
+    public Set<Player> getPlayers() {
+        return players;
     }
 }

@@ -12,7 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.logging.Level;
+
 import static com.sparkymc.phasmocraft.Utils.colorize;
+import static com.sparkymc.phasmocraft.Utils.log;
 
 public class EMFReader extends PhasmoItem {
     /**
@@ -32,6 +35,7 @@ public class EMFReader extends PhasmoItem {
         assert meta != null;
 
         meta.displayName(Component.text(colorize("&fEMF Reader")));
+        meta.getPersistentDataContainer().set(Phasmocraft.ITEM_KEY, PersistentDataType.STRING, "phasmocraft:emf_reader");
 
         stack.setItemMeta(meta);
         return stack;
@@ -39,6 +43,7 @@ public class EMFReader extends PhasmoItem {
 
     @Override
     public void onTick(Round round, Player owner, ItemStack stack, Item entity) {
+        log(Level.INFO, "EMF Reader is getting onTick");
         if (round == null) return;
         var meta = stack.getItemMeta();
         var container = meta.getPersistentDataContainer();
@@ -50,7 +55,7 @@ public class EMFReader extends PhasmoItem {
             stack.setItemMeta(meta);
         }
 
-        if (emfLevel == 1) return;
+//        if (emfLevel == 1) return;
         Location location = entity != null ? entity.getLocation() : owner != null ? owner.getLocation() : null;
         if (location == null) return; // ???
         round.getWorld().playSound(location, Sound.BLOCK_NOTE_BLOCK_CHIME, 0.5f, emfLevel);

@@ -2,15 +2,22 @@ package com.sparkymc.phasmocraft;
 
 import com.sparkymc.phasmocraft.objects.Round;
 import com.sparkymc.phasmocraft.objects.RoundStatus;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
+import org.bukkit.generator.ChunkGenerator;
 
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.logging.Level;
+
+import static com.sparkymc.phasmocraft.Utils.colorize;
+import static com.sparkymc.phasmocraft.Utils.log;
 
 public class RoundHandler implements Iterable<Round> {
 
@@ -46,10 +53,13 @@ public class RoundHandler implements Iterable<Round> {
      */
     public Round startRound(Player host) {
         var id = getFreeRoundId();
-        var world = Bukkit.createWorld(new WorldCreator("phasmocraft_lobby" + id));
+        var world = Bukkit.createWorld(new WorldCreator("phasmocraft_lobby" + id).generator((ChunkGenerator) null));
+
+        if (world == null) throw new IllegalStateException("Failed to create world!");
 
         var round = new Round(this, id, host, world);
-        round.setStatus(RoundStatus.IN_LOBBY);
+
+        rounds.add(round);
 
         return round;
     }
@@ -60,5 +70,29 @@ public class RoundHandler implements Iterable<Round> {
 
     public void setRoundEndLocation(Location roundEndLocation) {
         this.roundEndLocation = roundEndLocation;
+    }
+
+    public void dispose() {
+        rounds.forEach(round -> {
+            round.getPlayers().forEach(player -> {
+                player.teleport(roundEndLocation);
+                player.sendMessage(Component.text(colorize("&cThe round was forcibly ended because the plugin was disabled!")));
+            });
+            round.setStatus(RoundStatus.ENDED);
+        });
+    }
+
+    public boolean inRound(Player player) {
+        for (var round : this) {
+            if (round.getPlayers().contains(player)) return true;
+        }
+        return false;
+    }
+
+    public Round getRoundFromPlayer(Player player) {
+        for (var round : this) {
+            if (round.getPlayers().contains(player)) return round;
+        }
+        return null;
     }
 }
