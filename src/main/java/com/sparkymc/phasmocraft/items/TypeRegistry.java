@@ -1,14 +1,16 @@
 package com.sparkymc.phasmocraft.items;
 
 import org.bukkit.NamespacedKey;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 
 import static com.sparkymc.phasmocraft.Utils.log;
 
-public class TypeRegistry<T> {
+public class TypeRegistry<T> implements Iterable<Map.Entry<NamespacedKey, T>> {
 
     public static final TypeRegistry<PhasmoItem> ITEMS = new TypeRegistry<>();
 
@@ -37,5 +39,11 @@ public class TypeRegistry<T> {
 
     public int size() {
         return map.size();
+    }
+
+    @NotNull
+    @Override
+    public Iterator<Map.Entry<NamespacedKey, T>> iterator() {
+        return map.entrySet().iterator();
     }
 }

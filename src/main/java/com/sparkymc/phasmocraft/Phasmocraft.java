@@ -2,18 +2,16 @@ package com.sparkymc.phasmocraft;
 
 import com.sparkymc.phasmocraft.items.ItemListener;
 import com.sparkymc.phasmocraft.items.TypeRegistry;
+import dev.jorel.commandapi.CommandAPI;
+import dev.jorel.commandapi.CommandAPIConfig;
 import org.bukkit.NamespacedKey;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Locale;
 import java.util.logging.Level;
 
-import static com.sparkymc.phasmocraft.Utils.*;
+import static com.sparkymc.phasmocraft.Utils.log;
+import static com.sparkymc.phasmocraft.Utils.range;
 
 public class Phasmocraft extends JavaPlugin {
     public static final NamespacedKey ITEM_KEY = new NamespacedKey("phasmocraft", "item");
@@ -37,11 +35,17 @@ public class Phasmocraft extends JavaPlugin {
     };
 
     @Override
+    public void onLoad() {
+        CommandAPI.onLoad(new CommandAPIConfig().silentLogs(true));
+    }
+
+    @Override
     public void onEnable() {
         instance = this;
+        log(Level.INFO, startupMessages[range(startupMessages.length)]);
 
-        String message = startupMessages[range(startupMessages.length)];
-        log(Level.INFO, message);
+        CommandAPI.onEnable(this);
+        Commands.register();
 
         roundHandler = new RoundHandler();
         getServer().getPluginManager().registerEvents(new ItemListener(this), this);
@@ -70,8 +74,6 @@ public class Phasmocraft extends JavaPlugin {
 
         log(Level.INFO, TypeRegistry.ITEMS.size() + " items were successfully registered.");
         log(Level.INFO, "Successfully enabled Phasmocraft.");
-
-
     }
 
     @Override
@@ -87,23 +89,5 @@ public class Phasmocraft extends JavaPlugin {
 
     public RoundHandler getRoundHandler() {
         return roundHandler;
-    }
-
-    @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player player)) return true;
-
-        switch (command.getName()) {
-            case "giveitem" -> {
-                if (args.length != 1) throw new IllegalStateException();
-                var key = NamespacedKey.fromString(args[0]);
-                var itemType = TypeRegistry.ITEMS.get(key);
-                player.getInventory().addItem(itemType.create());
-            }
-            case "startround" -> {
-                roundHandler.startRound(player);
-            }
-        }
-        return true;
     }
 }
