@@ -40,6 +40,30 @@ public class Utils {
         log(Level.INFO, object);
     }
 
+    public static void log(Level level, String format, Object arg) {
+        log(level, format.formatted(arg));
+    }
+
+    public static void log(Level level, String format, Object arg0, Object arg1) {
+        log(level, format.formatted(arg0, arg1));
+    }
+
+    public static void log(Level level, String format, Object... args) {
+        log(level, format.formatted(args));
+    }
+
+    public static void log(String format, Object arg) {
+        log(Level.INFO, format, arg);
+    }
+
+    public static void log(String format, Object arg0, Object arg1) {
+        log(Level.INFO, format, arg0, arg1);
+    }
+
+    public static void log(String format, Object... args) {
+        log(Level.INFO, format, args);
+    }
+
     public static String colorize(String string) {
         Matcher matcher = HEX_PATTERN.matcher(string);
         while (matcher.find()) {

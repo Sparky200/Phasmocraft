@@ -45,33 +45,38 @@ public class Phasmocraft extends JavaPlugin {
         log(Level.INFO, startupMessages[range(startupMessages.length)]);
 
         CommandAPI.onEnable(this);
-        Commands.register();
 
         roundHandler = new RoundHandler();
+
+        Commands.register();
+
+        // Register listeners for items
         getServer().getPluginManager().registerEvents(new ItemListener(this), this);
-        getServer().getScheduler().runTaskTimer(this, () -> {
-            getServer().getOnlinePlayers().forEach(player -> {
-                var round = roundHandler.getRoundFromPlayer(player);
-                log(Level.INFO, round);
-                if (round == null) return;
 
-                player.getInventory().forEach(stack -> {
-                    var stackKeyS = stack.getItemMeta().getPersistentDataContainer().get(ITEM_KEY, PersistentDataType.STRING);
-                    log(Level.INFO, stackKeyS);
-                    if (stackKeyS == null) return;
+        // Every 10 ticks, tick items in player inventories
+        getServer().getScheduler().runTaskTimer(this, () -> getServer().getOnlinePlayers().forEach(player -> {
+            var round = roundHandler.getRoundFromPlayer(player);
+            if (round == null) return;
 
-                    var stackType = TypeRegistry.ITEMS.get(NamespacedKey.fromString(stackKeyS));
-                    if (stackType == null) return;
-                    log(Level.INFO, stackType.toString());
+            player.getInventory().forEach(stack -> {
+                if (stack == null) return;
+                var stackKeyS = stack.getItemMeta().getPersistentDataContainer().get(ITEM_KEY, PersistentDataType.STRING);
+                if (stackKeyS == null) return;
 
-                    stackType.onTick(round, player, stack, null);
-                });
+                var stackType = TypeRegistry.ITEMS.get(NamespacedKey.fromString(stackKeyS));
+                if (stackType == null) return;
+
+                stackType.onTick(round, player, stack, null);
             });
-        }, 10, 10);
+        }), 10, 10);
+
+        // Every 10 ticks, tick ground items
         getServer().getScheduler().runTaskTimer(this, () -> {
             // TODO: get entities and run tick. method should end up being "stackType.onTick(round, null, stack, entity);"
         }, 5, 10);
-
+        getServer().getScheduler().runTaskTimer(this, () -> {
+            for (var round : roundHandler) round.tickRound();
+        }, 10, 10);
         log(Level.INFO, TypeRegistry.ITEMS.size() + " items were successfully registered.");
         log(Level.INFO, "Successfully enabled Phasmocraft.");
     }

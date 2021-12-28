@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.sparkymc.phasmocraft.Utils.log;
+import static com.sparkymc.phasmocraft.Utils.range;
+
 /**
  * Represents a game round.
  */
@@ -133,12 +136,17 @@ public class Round {
      * Ran by the round handler to tick the round and all the items actively in the round.
      */
     public void tickRound() {
-
+        if (range(0, 100) > 95) {
+            EMFSource source;
+            triggerSource(source = new EMFSource(host.getWorld().getBlockAt(host.getLocation()), EMFCauses.GHOST_EVENT, range(2, 6), 30, 100));
+            log("Creating EMF Source - Location: %s, Cause: %s, Level: %s, Range: %s, Fade Time: %s", source.getSource().getLocation(), source.getCause(), source.getLevel(), source.getRange(), source.getFadeTime());
+        }
     }
 
     private void end() {
         // something should happen here
         // ur mom hahahahahhahahaha
+        // you're a bean grandma
     }
 
     public void start() {
