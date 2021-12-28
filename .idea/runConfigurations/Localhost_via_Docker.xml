@@ -1,0 +1,32 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Localhost via Docker" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+    <deployment type="dockerfile">
+      <settings>
+        <option name="attachToContainerNeeded" value="true" />
+        <option name="containerName" value="Phasmocraft-Server" />
+        <option name="portBindings">
+          <list>
+            <DockerPortBindingImpl>
+              <option name="containerPort" value="25565" />
+              <option name="hostIp" value="0.0.0.0" />
+              <option name="hostPort" value="25565" />
+            </DockerPortBindingImpl>
+          </list>
+        </option>
+        <option name="commandLineOptions" value="-m 4096m" />
+        <option name="sourceFilePath" value="Dockerfile" />
+        <option name="volumeBindings">
+          <list>
+            <DockerVolumeBindingImpl>
+              <option name="containerPath" value="/server" />
+              <option name="hostPath" value="D:\Projects\sparky\Phasmocraft\server\" />
+            </DockerVolumeBindingImpl>
+          </list>
+        </option>
+      </settings>
+    </deployment>
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Deploy to localhost" run_configuration_type="MavenRunConfiguration" />
+    </method>
+  </configuration>
+</component>
