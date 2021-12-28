@@ -1,6 +1,8 @@
 package com.sparkymc.phasmocraft;
 
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
@@ -74,5 +76,73 @@ public class Utils {
             matcher = HEX_PATTERN.matcher(string);
         }
         return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
+    public static void sendInfo(CommandSender sender, String message) {
+        sender.sendMessage(colorize("&5Phasmocraft &7≫ &b" + message));
+    }
+
+    public static void sendInfo(CommandSender sender, String format, Object arg) {
+        sendInfo(sender, format.formatted(arg));
+    }
+
+    public static void sendInfo(CommandSender sender, String format, Object arg0, Object arg1) {
+        sendInfo(sender, format.formatted(arg0, arg1));
+    }
+
+    public static void sendInfo(CommandSender sender, String format, Object... args) {
+        sendInfo(sender, format.formatted(args));
+    }
+
+    public static void sendSuccess(CommandSender sender, String message) {
+        sender.sendMessage(colorize("&5Phasmocraft &7≫ &a" + message));
+    }
+
+    public static void sendSuccess(CommandSender sender, String format, Object arg) {
+        sendSuccess(sender, format.formatted(arg));
+    }
+
+    public static void sendSuccess(CommandSender sender, String format, Object arg0, Object arg1) {
+        sendSuccess(sender, format.formatted(arg0, arg1));
+    }
+
+    public static void sendSuccess(CommandSender sender, String format, Object... args) {
+        sendSuccess(sender, format.formatted(args));
+    }
+
+    public static void sendWarning(CommandSender sender, String message) {
+        sender.sendMessage(colorize("&5Phasmocraft &7≫ &cWarning: " + message));
+    }
+
+    public static void sendWarning(CommandSender sender, String format, Object arg) {
+        sendWarning(sender, format.formatted(arg));
+    }
+
+    public static void sendWarning(CommandSender sender, String format, Object arg0, Object arg1) {
+        sendWarning(sender, format.formatted(arg0, arg1));
+    }
+
+    public static void sendWarning(CommandSender sender, String format, Object... args) {
+        sendWarning(sender, format.formatted(args));
+    }
+
+    public static void sendError(CommandSender sender, Throwable t) {
+        sender.sendMessage(colorize("&5Phasmocraft &7≫ &4Error: " + t.getMessage()));
+    }
+
+    public static void sendError(CommandSender sender, String message) {
+        sender.sendMessage(colorize("&5Phasmocraft &7≫ &4Error: " + message));
+    }
+
+    public static void sendError(CommandSender sender, String format, Object arg) {
+        sendError(sender, format.formatted(arg));
+    }
+
+    public static void sendError(CommandSender sender, String format, Object arg0, Object arg1) {
+        sendError(sender, format.formatted(arg0, arg1));
+    }
+
+    public static void sendError(CommandSender sender, String format, Object... args) {
+        sendError(sender, format.formatted(args));
     }
 }

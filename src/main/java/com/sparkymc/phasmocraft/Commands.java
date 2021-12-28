@@ -9,6 +9,9 @@ import org.bukkit.entity.Player;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.sparkymc.phasmocraft.Utils.sendInfo;
+import static com.sparkymc.phasmocraft.Utils.sendSuccess;
+
 public class Commands {
     private static final Phasmocraft main = Phasmocraft.getInstance();
 
@@ -24,7 +27,7 @@ public class Commands {
                         .executes((sender, objects) -> {
                             // reload shits
                         }))
-                /**
+                /*
                  * ITEM COMMANDS
                  */
                 .withSubcommand(new CommandAPICommand("items")
@@ -36,12 +39,13 @@ public class Commands {
                                 .withArguments(new StringArgument("item").replaceSuggestions(suggestionInfo -> {
                                     String[] strings = new String[TypeRegistry.ITEMS.size()];
                                     AtomicInteger i = new AtomicInteger();
-                                    TypeRegistry.ITEMS.forEach(key -> strings[i.getAndIncrement()] = key.getKey().asString());
+                                    TypeRegistry.ITEMS.forEach(key -> strings[i.getAndIncrement()] = key.getKey().getKey());
                                     return strings;
                                 }), new PlayerArgument("target"))
                                 .executes((sender, objects) -> {
+                                    var keyStr = (String) objects[0];
                                     var target = (Player) objects[1];
-                                    var key = NamespacedKey.fromString((String) objects[0]);
+                                    var key = NamespacedKey.fromString("phasmocraft:" + keyStr);
                                     var itemType = TypeRegistry.ITEMS.get(key);
                                     target.getInventory().addItem(itemType.create());
                                 }))
@@ -50,21 +54,24 @@ public class Commands {
                                 .withArguments(new StringArgument("item").replaceSuggestions(suggestionInfo -> {
                                     String[] strings = new String[TypeRegistry.ITEMS.size()];
                                     AtomicInteger i = new AtomicInteger();
-                                    TypeRegistry.ITEMS.forEach(key -> strings[i.getAndIncrement()] = key.getKey().asString());
+                                    TypeRegistry.ITEMS.forEach(key -> strings[i.getAndIncrement()] = key.getKey().getKey());
                                     return strings;
                                 }))
                                 .executesPlayer((sender, objects) -> {
-                                    var key = NamespacedKey.fromString((String) objects[0]);
+                                    var keyStr = (String) objects[0];
+                                    var key = NamespacedKey.fromString("phasmocraft:" + keyStr);
                                     var itemType = TypeRegistry.ITEMS.get(key);
                                     sender.getInventory().addItem(itemType.create());
                                 })))
-                /**
+                /*
                  * ROUND COMMANDS
                  */
                 .withSubcommand(new CommandAPICommand("round")
                         .withSubcommand(new CommandAPICommand("create")
                                 .executesPlayer((sender, objects) -> {
-                                    // Create round
+                                    sendInfo(sender, "Creating new round");
+                                    var round = roundHandler.createRound(sender);
+                                    sendSuccess(sender, "Created round with ID %s", round.getId());
                                 }))
                         .withSubcommand(new CommandAPICommand("edit")
                                 .executesPlayer((sender, objects) -> {
@@ -72,7 +79,7 @@ public class Commands {
                                 }))
                         .withSubcommand(new CommandAPICommand("start")
                                 .executesPlayer((sender, objects) -> {
-                                    roundHandler.startRound(sender);
+                                    // Start round
                                 }))).register();
     }
 }

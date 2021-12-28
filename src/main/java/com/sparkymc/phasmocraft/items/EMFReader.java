@@ -23,7 +23,14 @@ import static com.sparkymc.phasmocraft.Utils.log;
 public class EMFReader extends PhasmoItem {
     /**
      * The offset for the custom model data, if using a resource pack.
-     * An offset of 0 will put the 5 EMF Reader textures at 1-5.
+     * An offset of 0 will put the 5 EMF Reader textures at 1-6.
+     * Custom Model Data:
+     * - 1: Off
+     * - 2: No EMF
+     * - 3: EMF Level 2
+     * - 4: EMF Level 3
+     * - 5: EMF Level 4
+     * - 6: EMF Level 5
      */
     private static final int CUSTOM_MODEL_DATA_OFFSET = 0;
 
@@ -45,6 +52,7 @@ public class EMFReader extends PhasmoItem {
         meta.displayName(Component.text(colorize("&fEMF Reader")));
         meta.getPersistentDataContainer().set(Phasmocraft.ITEM_KEY, PersistentDataType.STRING, "phasmocraft:emf_reader");
 
+        meta.setCustomModelData(CUSTOM_MODEL_DATA_OFFSET + 1);
         stack.setItemMeta(meta);
         return stack;
     }
@@ -61,13 +69,13 @@ public class EMFReader extends PhasmoItem {
                 .filter(source ->
                         Math.sqrt(source.getSource().getLocation().distanceSquared(actual.getLocation())) <= source.getRange())
                 .max(Comparator.comparingInt(EMFSource::getLevel))
-                .ifPresent(highestSource ->
-                        container.set(EMF_LEVEL, PersistentDataType.INTEGER, highestSource.getLevel()));
+                .ifPresentOrElse(highestSource ->
+                        container.set(EMF_LEVEL, PersistentDataType.INTEGER, highestSource.getLevel()), () -> container.set(EMF_LEVEL, PersistentDataType.INTEGER, 1));
 
         var emfLevel = container.get(EMF_LEVEL, PersistentDataType.INTEGER);
         if (emfLevel == null) container.set(EMF_LEVEL, PersistentDataType.INTEGER, emfLevel = 1);
-        if (meta.hasCustomModelData() && meta.getCustomModelData() != emfLevel) {
-            meta.setCustomModelData(CUSTOM_MODEL_DATA_OFFSET + emfLevel);
+        if ((meta.hasCustomModelData() && meta.getCustomModelData() != emfLevel + 1) || !meta.hasCustomModelData()) {
+            meta.setCustomModelData(CUSTOM_MODEL_DATA_OFFSET + emfLevel + 1);
             stack.setItemMeta(meta);
         }
 

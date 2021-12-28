@@ -4,7 +4,6 @@ import com.sparkymc.phasmocraft.objects.Round;
 import com.sparkymc.phasmocraft.objects.RoundStatus;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
@@ -14,10 +13,8 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Level;
 
 import static com.sparkymc.phasmocraft.Utils.colorize;
-import static com.sparkymc.phasmocraft.Utils.log;
 
 public class RoundHandler implements Iterable<Round> {
 
@@ -47,11 +44,11 @@ public class RoundHandler implements Iterable<Round> {
     }
 
     /**
-     * Starts a new round and returns it.
+     * Creates a new round and returns it.
      * @param host The host of the round.
      * @return The round.
      */
-    public Round startRound(Player host) {
+    public Round createRound(Player host) {
         var id = getFreeRoundId();
         var world = Bukkit.createWorld(new WorldCreator("phasmocraft_lobby" + id).generator((ChunkGenerator) null));
 
