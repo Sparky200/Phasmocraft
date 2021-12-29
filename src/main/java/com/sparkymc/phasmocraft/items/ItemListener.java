@@ -1,6 +1,5 @@
 package com.sparkymc.phasmocraft.items;
 
-import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import com.sparkymc.phasmocraft.Phasmocraft;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
@@ -27,6 +26,8 @@ public class ItemListener implements Listener {
         if (!roundHandler.inRound(event.getPlayer())) return;
         var round = roundHandler.getRoundFromPlayer(event.getPlayer());
         assert round != null;
+
+        if (event.getItem() == null) return;
 
         var itemKeyS = event.getItem().getItemMeta().getPersistentDataContainer().get(Phasmocraft.ITEM_KEY, PersistentDataType.STRING);
         if (itemKeyS == null) return;
