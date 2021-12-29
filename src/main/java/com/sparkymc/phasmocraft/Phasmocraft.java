@@ -2,12 +2,18 @@ package com.sparkymc.phasmocraft;
 
 import com.sparkymc.phasmocraft.items.ItemListener;
 import com.sparkymc.phasmocraft.items.TypeRegistry;
+import com.sparkymc.phasmocraft.map.MapLoader;
+import com.sparkymc.phasmocraft.map.PhasmoMap;
+import com.sparkymc.phasmocraft.util.IntTuple;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import static com.sparkymc.phasmocraft.Utils.log;
